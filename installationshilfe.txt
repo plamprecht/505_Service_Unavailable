@@ -1,0 +1,63 @@
+-D CMAKE_C_COMPILER=clang
+-D CMAKE_CXX_COMPILER=clang++
+
+gcc
+
+OMP
+
+cmake -Bbuild -H. -DMODEL=OMP
+
+OCL
+
+intel-opencl-icd
+ocl-icd-opencl-dev
+
+cmake -Bbuild -H. -DMODEL=OCL -DOpenCL_LIBRARY=/usr/lib/x86_64-linux-gnu/libOpenCL.so
+
+OpenACC (validation failed)
+
+gcc-offload-nvptx
+gcc-offload-amdgcn
+
+cmake -Bbuild -H. -DMODEL=ACC
+
+Kokkos
+
+git clone https://github.com/kokkos/kokkos.git
+
+cmake -Bbuild -H. -DMODEL=Kokkos -DKOKKOS_IN_TREE=/home/johannes/kokkos -DKokkos_ENABLE_OPENMP=ON
+
+RAJA
+
+git clone --recursive https://github.com/llnl/raja.git
+
+cmake -Bbuild -H. -DMODEL=RAJA -DRAJA_IN_TREE=/home/johannes/raja -DENABLE_OPENMP=ON -DBLT_SOURCE_DIR=/home/johannes/raja/blt
+
+SYCL
+
+clang
+llvm
+libboost-dev
+libboost-fiber-dev
+
+git clone --recurse-submodules https://github.com/illuhad/hipSYCL
+mkdir build
+cmake ..
+make install
+
+cmake -Bbuild -H. -DMODEL=SYCL -DSYCL_COMPILER=HIPSYCL
+
+TBB
+
+git clone https://github.com/oneapi-src/oneTBB.git
+
+cd oneTBB; mkdir build;
+cmake ..
+cmake --build .
+sudo cmake -DCOMPONENT=runtime -P cmake_install.cmake
+sudo cmake -DCOMPONENT=devel -P cmake_install.cmake
+
+cmake -Bbuild -H. -DMODEL=TBB -DONE_TBB_DIR=/usr/local/include/oneapi/tbb
+
+
+
